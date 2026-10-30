@@ -12,7 +12,7 @@
             --bg: #f7f8f6;
             --text: #1a1a1a;
             --text-light: #666;
-            --accent: #0f766e; /* Deep Teal */
+            --accent: #0f766e;
             --accent-hover: #115e59;
             --border: #e5e7eb;
             --card-bg: #ffffff;
@@ -205,7 +205,7 @@
             color: var(--text-light);
         }
 
-        /* HERO VISUAL (Pure CSS to mimic the image) */
+        /* HERO VISUAL */
         .hero-visual {
             background: linear-gradient(135deg, #091a1c 0%, #0d2e2f 100%);
             border-radius: 16px;
@@ -228,6 +228,7 @@
             backdrop-filter: blur(5px);
             transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
             box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.5s ease;
         }
 
         .glass-layer:nth-child(1) { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateZ(0px); }
@@ -240,4 +241,230 @@
             width: 120%;
             height: 100%;
             background: radial-gradient(circle at 30% 70%, rgba(45, 212, 191, 0.4) 0%, transparent 50%);
-            filter
+            filter: blur(20px);
+        }
+
+        .visual-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.7rem;
+            font-family: 'Space Grotesk', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* FEATURES */
+        .features {
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 0 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .feature-item {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .feature-icon {
+            color: var(--accent);
+        }
+
+        /* CTA SECTION */
+        .cta-section {
+            max-width: 800px;
+            margin: 100px auto;
+            text-align: center;
+            padding: 60px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            color: var(--text-light);
+            margin-bottom: 40px;
+        }
+
+        .email-form {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .email-form input {
+            flex: 1;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .email-form input:focus {
+            border-color: var(--accent);
+        }
+
+        .email-form button {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .email-form button:hover {
+            background: var(--accent-hover);
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-light);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+            margin-top: 60px;
+        }
+
+        /* MOBILE RESPONSIVENESS */
+        @media (max-width: 900px) {
+            nav {
+                padding: 15px 20px;
+            }
+            .nav-links {
+                display: none; /* Hide links on mobile - we will add a hamburger menu later */
+            }
+            .status-dot {
+                display: none;
+            }
+            .hero {
+                grid-template-columns: 1fr;
+                margin: 40px auto;
+                padding: 0 20px;
+                gap: 40px;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1rem;
+                max-width: 100%;
+            }
+            .hero-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .features {
+                grid-template-columns: 1fr 1fr;
+                padding: 0 20px;
+                margin: 60px auto;
+            }
+            .cta-section {
+                margin: 60px 20px;
+                padding: 40px 20px;
+            }
+            .email-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">StealthText <span>API</span></div>
+        <div class="nav-links">
+            <a href="#">Overview</a>
+            <a href="#">Case studies</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="nav-cta">
+            <div class="status-dot">Now in early access</div>
+            <a href="#contact" class="btn">Let's talk ↗</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <div class="tagline">Invisible data. Intentional design.</div>
+            <h1>Some things are better left <span>invisible.</span></h1>
+            <p>Embed protected information and unique signatures in everyday text. An invisible layer for the words your business depends on.</p>
+            
+            <div class="hero-buttons">
+                <a href="#contact" class="btn">Request early access ↗</a>
+                <a href="#" class="btn-secondary">See how it works →</a>
+            </div>
+            <div class="hero-note">A developer-first approach to text steganography.</div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="teal-thread"></div>
+            <div class="glass-layer"></div>
+            <div class="glass-layer"></div>
+            <div class="glass-layer"></div>
+            <div class="glass-layer"></div>
+            
+            <div class="visual-text">
+                <span>Ordinary on the surface. More beneath.</span>
+                <span>StealthText / Concept</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-item">
+            <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+            Text-native by design
+        </div>
+        <div class="feature-item">
+            <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
+            REST API integration
+        </div>
+        <div class="feature-item">
+            <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            Key-based retrieval
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <h2>Request Early Access</h2>
+        <p>We are currently onboarding enterprise clients. Join the waitlist to receive your custom API key and documentation.</p>
+        
+        <form class="email-form" action="https://formspree.io/f/mzeevlld" method="POST">
+            <input type="email" name="email" placeholder="Enter your corporate email" required>
+            <button type="submit">Request Access</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>© 2026 StealthText API. The invisible layer of enterprise communication.</p>
+        <p style="margin-top: 10px; font-size: 0.7rem;">Tested against GPT-6.0 Luna High. The cipher is mathematically secure.</p>
+    </footer>
+
+</body>
+</html>
