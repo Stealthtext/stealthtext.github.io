@@ -3,468 +3,474 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StealthText API | Invisible Data Concealment</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <title>StealthText API | The Invisible Layer</title>
     <style>
         :root {
-            --bg: #f7f8f6;
-            --text: #1a1a1a;
-            --text-light: #666;
-            --accent: #0f766e;
-            --accent-hover: #115e59;
-            --border: #e5e7eb;
-            --card-bg: #ffffff;
-            --nav-bg: rgba(247, 248, 246, 0.9);
+            --bg: #040b0e;
+            --fg: #e9f9f6;
+            --muted: #8ba5a8;
+            --mint: #75ffdc;
+            --panel: #0a1b21;
+            --line: #1c3b42;
+            --accent: #5ce8c5;
+            --danger: #ff6b6b;
         }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg);
-            color: var(--text);
+            background: var(--bg);
+            color: var(--fg);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
-
-        h1, h2, h3 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 500;
-        }
-
+        a { color: inherit; text-decoration: none; }
+        
         /* NAVIGATION */
-        nav {
-            position: sticky;
-            top: 0;
-            background: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            padding: 20px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 100;
+            background: rgba(4, 11, 14, 0.7);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.3s;
         }
-
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700;
-            font-size: 1.2rem;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .nav-container {
+            max-width: 1200px; margin: auto; padding: 18px 24px;
+            display: flex; align-items: center; justify-content: space-between;
         }
+        .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; }
+        .logo span { color: var(--mint); }
+        .pill { font-size: 10px; border: 1px solid var(--mint); border-radius: 4px; padding: 2px 6px; color: var(--mint); margin-left: 6px; vertical-align: middle; }
         
-        .logo span {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.7rem;
-            font-weight: 600;
-            background: var(--accent);
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 30px;
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-
-        .nav-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent);
-        }
-
-        .nav-cta {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .status-dot {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .status-dot::before {
-            content: '';
-            width: 6px;
-            height: 6px;
-            background: #10b981;
-            border-radius: 50%;
-        }
-
+        .nav-links { display: flex; gap: 30px; font-size: 14px; color: var(--muted); }
+        .nav-links a:hover { color: var(--mint); }
+        
         .btn {
-            background: var(--accent);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: background 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            background: var(--accent); color: #021416; font-weight: 700;
+            padding: 12px 24px; border-radius: 8px; font-size: 15px;
+            display: inline-block; border: none; cursor: pointer; transition: 0.2s;
         }
+        .btn:hover { background: #fff; box-shadow: 0 0 20px rgba(92, 232, 197, 0.4); transform: translateY(-2px); }
+        .btn.secondary { background: transparent; color: var(--fg); border: 1px solid var(--line); }
+        .btn.secondary:hover { border-color: var(--mint); color: var(--mint); background: transparent; }
 
-        .btn:hover {
-            background: var(--accent-hover);
-        }
-
-        /* HERO SECTION */
+        /* HERO */
         .hero {
-            max-width: 1200px;
-            margin: 80px auto;
-            padding: 0 40px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
+            position: relative; min-height: 100vh; display: flex; align-items: center;
+            background: url('hero.png') center/cover no-repeat; /* CHANGED TO .PNG */
         }
-
-        .hero-text .tagline {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .hero::before {
+            content: ""; position: absolute; inset: 0;
+            background: linear-gradient(90deg, #040b0e 0%, rgba(4,11,14,0.9) 40%, rgba(4,11,14,0.2) 100%);
         }
+        .hero-content { position: relative; max-width: 1200px; margin: auto; padding: 120px 24px; width: 100%; }
+        .eyebrow { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--mint); font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .eyebrow::before { content: ''; width: 8px; height: 8px; background: var(--mint); border-radius: 50%; box-shadow: 0 0 10px var(--mint); }
+        .hero h1 { font-size: clamp(48px, 6vw, 86px); letter-spacing: -0.04em; line-height: 1.05; max-width: 800px; margin-bottom: 25px; }
+        .gradient { background: linear-gradient(100deg, #75ffdc, #5ce8c5); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .lead { font-size: clamp(18px, 2vw, 22px); line-height: 1.6; max-width: 600px; color: #b0caca; margin-bottom: 40px; }
+        .actions { display: flex; gap: 15px; flex-wrap: wrap; }
 
-        .hero-text .tagline::before {
-            content: '';
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
+        /* SECTIONS */
+        .wrap { max-width: 1200px; margin: auto; padding: 100px 24px; }
+        .section-title { font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
+        .sub { color: var(--muted); font-size: 18px; line-height: 1.7; max-width: 700px; margin-bottom: 50px; }
+
+        /* THE LAB */
+        .lab-container {
+            background: linear-gradient(180deg, #0a1b21 0%, #040b0e 100%);
+            border: 1px solid var(--line); border-radius: 24px;
+            padding: clamp(24px, 4vw, 48px); box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative; overflow: hidden;
         }
-
-        .hero h1 {
-            font-size: 4rem;
-            line-height: 1.1;
-            letter-spacing: -1px;
-            margin-bottom: 24px;
-        }
-
-        .hero h1 span {
-            color: var(--accent);
-        }
-
-        .hero p {
-            font-size: 1.1rem;
-            color: var(--text-light);
-            margin-bottom: 40px;
-            max-width: 90%;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .btn-secondary {
-            color: var(--text);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .lab-container::before {
+            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: radial-gradient(circle at 50% 0%, rgba(92,232,197,0.05) 0%, transparent 50%);
+            pointer-events: none;
         }
         
-        .btn-secondary:hover {
-            color: var(--accent);
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
+        .tab { background: none; border: none; color: var(--muted); font-size: 16px; font-weight: 600; cursor: pointer; padding: 10px 20px; border-radius: 8px; transition: 0.2s; }
+        .tab.active { background: rgba(92,232,197,0.1); color: var(--mint); }
+        .tab:hover:not(.active) { color: var(--fg); }
+
+        .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        .field { display: flex; flex-direction: column; gap: 10px; }
+        .field.wide { grid-column: 1 / -1; }
+        label { font-weight: 500; font-size: 14px; color: var(--muted); }
+        
+        textarea, input {
+            width: 100%; background: #020708; color: var(--fg);
+            border: 1px solid var(--line); border-radius: 10px;
+            padding: 16px; font: inherit; font-size: 15px; outline: none; transition: 0.3s;
         }
+        textarea:focus, input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(92,232,197,0.1); }
+        textarea { min-height: 140px; resize: vertical; }
+        #result { min-height: 180px; background: #081519; font-family: monospace; color: var(--mint); line-height: 1.8; }
+        
+        .hide { display: none !important; }
+        .status { color: var(--mint); font-size: 14px; margin-top: 15px; min-height: 20px; text-align: center; font-weight: 500; }
+        .status.error { color: var(--danger); }
+        
+        /* TEXT ANIMATION */
+        .fade-out { animation: fadeOut 0.5s forwards; }
+        .fade-in { animation: fadeIn 1s forwards; }
+        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero-note {
-            margin-top: 20px;
-            font-size: 0.8rem;
-            color: var(--text-light);
+        /* VISUAL SIGNAL */
+        .signal-box { margin-top: 30px; background: #020708; border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+        .bits { font-family: monospace; font-size: 13px; color: var(--accent); opacity: 0.6; word-break: break-all; letter-spacing: 1px; }
+
+        /* CARDS */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 35px; transition: 0.3s; }
+        .card:hover { border-color: var(--mint); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .card .icon { font-size: 32px; color: var(--mint); margin-bottom: 20px; }
+        .card h3 { font-size: 22px; margin-bottom: 12px; }
+        .card p { color: var(--muted); font-size: 15px; }
+
+        /* FAQ */
+        .faq details { border-bottom: 1px solid var(--line); padding: 24px 0; }
+        .faq summary { cursor: pointer; font-size: 20px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; align-items: center; }
+        .faq summary::-webkit-details-marker { display: none; }
+        .faq summary::after { content: '+'; color: var(--mint); font-size: 24px; font-weight: 300; transition: 0.3s; }
+        .faq details[open] summary::after { transform: rotate(45deg); }
+        .faq p { color: var(--muted); line-height: 1.7; margin-top: 15px; max-width: 800px; }
+
+        /* CONTACT */
+        .contact-banner {
+            background: linear-gradient(135deg, #0a1b21 0%, #040b0e 100%);
+            border: 1px solid var(--mint); border-radius: 24px;
+            padding: 60px; text-align: center;
+            box-shadow: 0 0 60px rgba(92,232,197,0.05);
         }
+        .contact-banner h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 20px; }
+        .email-form { display: flex; gap: 12px; justify-content: center; max-width: 500px; margin: 30px auto 0; }
+        .email-form input { background: #020708; }
+        .email-form button { padding: 16px 32px; border-radius: 10px; }
 
-        /* HERO VISUAL */
-        .hero-visual {
-            background: linear-gradient(135deg, #091a1c 0%, #0d2e2f 100%);
-            border-radius: 16px;
-            aspect-ratio: 4/3;
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
+        footer { border-top: 1px solid var(--line); padding: 50px 24px; text-align: center; color: var(--muted); font-size: 14px; }
 
-        .glass-layer {
-            position: absolute;
-            width: 60%;
-            height: 70%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.02) 100%);
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            backdrop-filter: blur(5px);
-            transform: perspective(1000px) rotateY(-15deg) rotateX(5deg);
-            box-shadow: -10px 10px 30px rgba(0,0,0,0.3);
-            transition: transform 0.5s ease;
-        }
-
-        .glass-layer:nth-child(1) { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateZ(0px); }
-        .glass-layer:nth-child(2) { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateZ(40px) translateX(20px); opacity: 0.8; }
-        .glass-layer:nth-child(3) { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateZ(80px) translateX(40px); opacity: 0.6; }
-        .glass-layer:nth-child(4) { transform: perspective(1000px) rotateY(-15deg) rotateX(5deg) translateZ(120px) translateX(60px); opacity: 0.4; }
-
-        .teal-thread {
-            position: absolute;
-            width: 120%;
-            height: 100%;
-            background: radial-gradient(circle at 30% 70%, rgba(45, 212, 191, 0.4) 0%, transparent 50%);
-            filter: blur(20px);
-        }
-
-        .visual-text {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            display: flex;
-            justify-content: space-between;
-            color: rgba(255,255,255,0.5);
-            font-size: 0.7rem;
-            font-family: 'Space Grotesk', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* FEATURES */
-        .features {
-            max-width: 1200px;
-            margin: 100px auto;
-            padding: 0 40px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
-
-        .feature-item {
-            font-size: 0.9rem;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feature-icon {
-            color: var(--accent);
-        }
-
-        /* CTA SECTION */
-        .cta-section {
-            max-width: 800px;
-            margin: 100px auto;
-            text-align: center;
-            padding: 60px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.02);
-        }
-
-        .cta-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        .cta-section p {
-            color: var(--text-light);
-            margin-bottom: 40px;
-        }
-
-        .email-form {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            max-width: 500px;
-            margin: 0 auto;
-        }
-
-        .email-form input {
-            flex: 1;
-            padding: 15px;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-
-        .email-form input:focus {
-            border-color: var(--accent);
-        }
-
-        .email-form button {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 6px;
-            font-family: 'Inter', sans-serif;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .email-form button:hover {
-            background: var(--accent-hover);
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: var(--text-light);
-            font-size: 0.8rem;
-            border-top: 1px solid var(--border);
-            margin-top: 60px;
-        }
-
-        /* MOBILE RESPONSIVENESS */
+        /* RESPONSIVE */
         @media (max-width: 900px) {
-            nav {
-                padding: 15px 20px;
-            }
-            .nav-links {
-                display: none; /* Hide links on mobile - we will add a hamburger menu later */
-            }
-            .status-dot {
-                display: none;
-            }
-            .hero {
-                grid-template-columns: 1fr;
-                margin: 40px auto;
-                padding: 0 20px;
-                gap: 40px;
-            }
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-            .hero p {
-                font-size: 1rem;
-                max-width: 100%;
-            }
-            .hero-buttons {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .features {
-                grid-template-columns: 1fr 1fr;
-                padding: 0 20px;
-                margin: 60px auto;
-            }
-            .cta-section {
-                margin: 60px 20px;
-                padding: 40px 20px;
-            }
-            .email-form {
-                flex-direction: column;
-            }
+            .nav-links { display: none; }
+            .hero::before { background: linear-gradient(180deg, #040b0e 0%, rgba(4,11,14,0.8) 100%); }
+            .hero-content { text-align: center; padding-top: 150px; }
+            .eyebrow { justify-content: center; }
+            .hero h1, .lead { margin-left: auto; margin-right: auto; }
+            .actions { justify-content: center; }
+            .fields { grid-template-columns: 1fr; }
+            .grid-3 { grid-template-columns: 1fr; }
+            .email-form { flex-direction: column; }
+            .contact-banner { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">StealthText <span>API</span></div>
-        <div class="nav-links">
-            <a href="#">Overview</a>
-            <a href="#">Case studies</a>
-            <a href="#contact">Contact</a>
+    <header>
+        <div class="nav-container">
+            <div class="logo">stealth<span>text</span> <span class="pill">API</span></div>
+            <nav class="nav-links">
+                <a href="#overview">Overview</a>
+                <a href="#lab">The Lab</a>
+                <a href="#uses">Scenarios</a>
+                <a href="#faq">FAQ</a>
+            </nav>
+            <a class="btn" href="#contact">Request Access</a>
         </div>
-        <div class="nav-cta">
-            <div class="status-dot">Now in early access</div>
-            <a href="#contact" class="btn">Let's talk ↗</a>
-        </div>
-    </nav>
+    </header>
 
-    <section class="hero">
-        <div class="hero-text">
-            <div class="tagline">Invisible data. Intentional design.</div>
-            <h1>Some things are better left <span>invisible.</span></h1>
-            <p>Embed protected information and unique signatures in everyday text. An invisible layer for the words your business depends on.</p>
-            
-            <div class="hero-buttons">
-                <a href="#contact" class="btn">Request early access ↗</a>
-                <a href="#" class="btn-secondary">See how it works →</a>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="eyebrow">Invisible data. Intentional design.</div>
+                <h1>Some things are better left <span class="gradient">invisible.</span></h1>
+                <p class="lead">Embed protected information and unique signatures in everyday text. An invisible layer for the words your business depends on.</p>
+                <div class="actions">
+                    <a class="btn" href="#lab">Try the Live Lab</a>
+                    <a class="btn secondary" href="#overview">See how it works</a>
+                </div>
             </div>
-            <div class="hero-note">A developer-first approach to text steganography.</div>
-        </div>
+        </section>
 
-        <div class="hero-visual">
-            <div class="teal-thread"></div>
-            <div class="glass-layer"></div>
-            <div class="glass-layer"></div>
-            <div class="glass-layer"></div>
-            <div class="glass-layer"></div>
-            
-            <div class="visual-text">
-                <span>Ordinary on the surface. More beneath.</span>
-                <span>StealthText / Concept</span>
+        <section class="wrap" id="overview">
+            <div class="eyebrow">Beyond the surface</div>
+            <h2 class="section-title">Ordinary text.<br><span class="gradient">Extraordinary possibilities.</span></h2>
+            <p class="sub">StealthText explores a different approach to data concealment: placing an additional layer of information within natural-looking text. Discover our interactive proof of concept below.</p>
+            <div class="grid-3">
+                <article class="card">
+                    <div class="icon">◈</div>
+                    <h3>Make every copy uniquely yours.</h3>
+                    <p>Explore invisible linguistic signatures that connect a piece of text to its intended source or recipient.</p>
+                </article>
+                <article class="card">
+                    <div class="icon">▤</div>
+                    <h3>A layer within language.</h3>
+                    <p>Conceal a payload within ordinary-looking text, with retrieval based on the relevant key.</p>
+                </article>
+                <article class="card">
+                    <div class="icon">⌘</div>
+                    <h3>Built for your workflow.</h3>
+                    <p>Evaluate a REST API approach around your application, document or communication workflow.</p>
+                </article>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="features">
-        <div class="feature-item">
-            <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
-            Text-native by design
-        </div>
-        <div class="feature-item">
-            <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 18l6-6-6-6M8 6l-6 6 6 6"/></svg>
-            REST API integration
-        </div>
-        <div class="feature-item">
-            <svg class="feature-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-            Key-based retrieval
-        </div>
-    </section>
+        <section class="wrap" id="lab">
+            <div class="eyebrow">The invisible message lab / 001</div>
+            <h2 class="section-title">The same words.<br><span class="gradient">A different layer.</span></h2>
+            <p class="sub">Write a secret. Lock it with a password. Watch the message transform into a stream of harmless-looking words. Unlock it with the same password.</p>
+            
+            <div class="lab-container">
+                <div class="tabs">
+                    <button class="tab active" id="encodeTab">✦ Hide Message</button>
+                    <button class="tab" id="decodeTab">⌁ Reveal Message</button>
+                </div>
+                
+                <div id="encodePanel">
+                    <div class="fields">
+                        <div class="field wide">
+                            <label for="secret">Secret Message</label>
+                            <textarea id="secret" placeholder="Type your secret message here..."></textarea>
+                        </div>
+                        <div class="field">
+                            <label for="pass">Encryption Password</label>
+                            <input id="pass" type="password" placeholder="Enter a strong password">
+                        </div>
+                    </div>
+                    <div class="actions" style="margin-top: 30px; justify-content: center;">
+                        <button class="btn" id="encode">Encrypt & Camouflage</button>
+                    </div>
+                </div>
+                
+                <div id="decodePanel" class="hide">
+                    <div class="fields">
+                        <div class="field wide">
+                            <label for="coded">Camouflaged Text</label>
+                            <textarea id="coded" placeholder="Paste the generated word passage here..."></textarea>
+                        </div>
+                        <div class="field wide">
+                            <label for="decodePass">Decryption Password</label>
+                            <input id="decodePass" type="password" placeholder="Enter the password used to encrypt">
+                        </div>
+                    </div>
+                    <div class="actions" style="margin-top: 30px; justify-content: center;">
+                        <button class="btn" id="decode">Reveal Original Message</button>
+                    </div>
+                </div>
 
-    <section class="cta-section" id="contact">
-        <h2>Request Early Access</h2>
-        <p>We are currently onboarding enterprise clients. Join the waitlist to receive your custom API key and documentation.</p>
-        
-        <form class="email-form" action="https://formspree.io/f/mzeevlld" method="POST">
-            <input type="email" name="email" placeholder="Enter your corporate email" required>
-            <button type="submit">Request Access</button>
-        </form>
-    </section>
+                <div class="signal-box">
+                    <div class="eyebrow" style="margin-bottom: 10px;">Encrypted Signal</div>
+                    <div class="bits" id="bits">01010011 01010100 01000101 01000001 01001100 01010100 01001000</div>
+                </div>
+
+                <div class="field wide" style="margin-top: 30px;">
+                    <label id="resultLabel" for="result">Generated Camouflage Text</label>
+                    <textarea id="result" readonly placeholder="Your result appears here..."></textarea>
+                </div>
+                
+                <div class="actions" style="margin-top: 20px; justify-content: center;">
+                    <button class="btn secondary" id="copy">Copy to Clipboard</button>
+                    <button class="btn secondary" id="transfer">Send to Decoder →</button>
+                </div>
+                <p class="status" id="status"></p>
+                <p style="font-size: 12px; color: var(--muted); text-align: center; margin-top: 20px;">Demo security: AES-GCM encryption with a password-derived key (PBKDF2). No text is sent to a server. Editing the generated passage may prevent recovery.</p>
+            </div>
+        </section>
+
+        <section class="wrap" id="uses">
+            <div class="eyebrow">Where it could fit</div>
+            <h2 class="section-title">Possibilities,<br><span class="gradient">made practical.</span></h2>
+            <div class="grid-3">
+                <article class="card">
+                    <div class="icon">◉</div>
+                    <h3>Provenance</h3>
+                    <p>Give every document a traceable origin. Explore how unique text signatures could help identify the source of a shared document.</p>
+                </article>
+                <article class="card">
+                    <div class="icon">✉</div>
+                    <h3>Communication</h3>
+                    <p>Add a discreet layer to everyday communication by embedding protected information within approved workflows.</p>
+                </article>
+                <article class="card">
+                    <div class="icon">⌘</div>
+                    <h3>Integration</h3>
+                    <p>Bring the invisible layer into your product. Plan an API evaluation around your existing systems and text workflows.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="wrap faq" id="faq">
+            <div class="eyebrow">A little more clarity</div>
+            <h2 class="section-title">Good questions.<br>Clearer answers.</h2>
+            <details>
+                <summary>What is text steganography?</summary>
+                <p>Text steganography hides information in the structure or choice of words in apparently ordinary text. Unlike encryption, its goal is to conceal that a message exists.</p>
+            </details>
+            <details>
+                <summary>Does this replace encryption?</summary>
+                <p>No. Steganography and encryption solve different problems. This demonstration encrypts the secret before mapping the ciphertext to words.</p>
+            </details>
+            <details>
+                <summary>How can my team evaluate StealthText?</summary>
+                <p>Start with a use case, define what must survive editing or transmission, then test extraction accuracy, detectability, and security. A production REST API is not included in this browser demo.</p>
+            </details>
+            <details>
+                <summary>Are these real customer case studies?</summary>
+                <p>No. The scenarios shown here are illustrative, not verified customer deployments or security results.</p>
+            </details>
+        </section>
+
+        <section class="wrap" id="contact">
+            <div class="contact-banner">
+                <div class="eyebrow" style="justify-content: center;">A quieter kind of protection</div>
+                <h2>Your next layer starts<br>with a conversation.</h2>
+                <p class="sub" style="margin: 0 auto 30px auto; text-align: center;">Tell us what you're building. Let's explore where StealthText fits into your product or communication workflow.</p>
+                
+                <form class="email-form" action="https://formspree.io/f/mzeevlld" method="POST">
+                    <input type="email" name="email" placeholder="Enter your corporate email" required>
+                    <button type="submit">Request Early Access</button>
+                </form>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>© 2026 StealthText API. The invisible layer of enterprise communication.</p>
-        <p style="margin-top: 10px; font-size: 0.7rem;">Tested against GPT-6.0 Luna High. The cipher is mathematically secure.</p>
+        <div class="logo" style="margin-bottom: 15px;">stealth<span>text</span> <span class="pill">API</span></div>
+        <p>The invisible layer. A more thoughtful way to protect your text.</p>
+        <p style="margin-top: 15px; font-size: 12px; opacity: 0.5;">© 2026 StealthText. Independent interactive concept. Original 3D artwork. Browser-only technical prototype.</p>
     </footer>
 
+    <script>
+        const words = 'amber bridge candle drift ember forest garden harbor island jasmine kernel lantern meadow nectar orbit pebble quartz river stone trace union vapor willow xenon yield zephyr anchor blaze cloud dusk echo flame glide haze iris'.split(' ');
+        const enc = new TextEncoder(), dec = new TextDecoder();
+        const $ = id => document.getElementById(id);
+
+        function show(mode) {
+            const e = mode === 'encode';
+            $('encodePanel').classList.toggle('hide', !e);
+            $('decodePanel').classList.toggle('hide', e);
+            $('encodeTab').classList.toggle('active', e);
+            $('decodeTab').classList.toggle('active', !e);
+            $('resultLabel').textContent = e ? 'Generated Camouflage Text' : 'Recovered Secret Message';
+            $('result').value = '';
+            $('status').textContent = '';
+            $('status').classList.remove('error');
+        }
+        $('encodeTab').onclick = () => show('encode');
+        $('decodeTab').onclick = () => show('decode');
+
+        function hexWords(bytes) {
+            return [...bytes].flatMap(b => [words[b >> 4], words[b & 15]]).join(' ');
+        }
+
+        function unWords(text) {
+            const toks = text.toLowerCase().match(/[a-z]+/g) || [];
+            if (toks.some(w => !words.includes(w)) || toks.length % 2) throw Error('Invalid or modified camouflage text.');
+            let out = new Uint8Array(toks.length / 2);
+            for (let i = 0; i < toks.length; i += 2) out[i / 2] = (words.indexOf(toks[i]) << 4) | words.indexOf(toks[i + 1]);
+            return out;
+        }
+
+        async function key(pass, salt) {
+            const raw = await crypto.subtle.importKey('raw', enc.encode(pass), 'PBKDF2', false, ['deriveKey']);
+            return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 150000, hash: 'SHA-256' }, raw, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+        }
+
+        function bits(bytes) {
+            $('bits').textContent = [...bytes].slice(0, 22).map(x => x.toString(2).padStart(8, '0')).join(' ');
+        }
+
+        $('encode').onclick = async () => {
+            try {
+                if (!crypto.subtle) throw Error('Open over HTTPS or localhost for encryption.');
+                const message = $('secret').value, pass = $('pass').value;
+                if (!message || !pass) throw Error('Enter both a message and password.');
+                
+                $('result').classList.add('fade-out');
+                
+                setTimeout(async () => {
+                    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+                    const encrypted = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, await key(pass, salt), enc.encode(message)));
+                    const payload = new Uint8Array(1 + 16 + 12 + encrypted.length);
+                    payload[0] = 1;
+                    payload.set(salt, 1);
+                    payload.set(iv, 17);
+                    payload.set(encrypted, 29);
+                    const raw = hexWords(payload).split(' ');
+                    let lines = [];
+                    for (let i = 0; i < raw.length; i += 18) {
+                        let s = raw.slice(i, i + 18).join(' ');
+                        lines.push(s.charAt(0).toUpperCase() + s.slice(1) + '.');
+                    }
+                    const text = lines.join('\n');
+                    
+                    $('result').value = text;
+                    $('coded').value = text;
+                    bits(payload);
+                    
+                    $('result').classList.remove('fade-out');
+                    $('result').classList.add('fade-in');
+                    $('status').textContent = '✓ Encrypted into ' + raw.length + ' camouflage words.';
+                    
+                    setTimeout(() => $('result').classList.remove('fade-in'), 1000);
+                }, 500);
+
+            } catch (e) {
+                $('result').classList.remove('fade-out');
+                $('status').textContent = '⚠ ' + e.message;
+                $('status').classList.add('error');
+            }
+        };
+
+        $('decode').onclick = async () => {
+            try {
+                const pass = $('decodePass').value;
+                if (!pass) throw Error('Enter your password.');
+                const data = unWords($('coded').value);
+                if (data[0] !== 1 || data.length < 46) throw Error('Unsupported or incomplete message.');
+                const salt = data.slice(1, 17), iv = data.slice(17, 29), body = data.slice(29);
+                const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, await key(pass, salt), body);
+                
+                $('result').classList.add('fade-out');
+                setTimeout(() => {
+                    $('result').value = dec.decode(plain);
+                    bits(data);
+                    $('result').classList.remove('fade-out');
+                    $('result').classList.add('fade-in');
+                    $('status').textContent = '✓ Hidden message successfully recovered.';
+                    setTimeout(() => $('result').classList.remove('fade-in'), 1000);
+                }, 500);
+
+            } catch (e) {
+                $('result').value = '';
+                $('status').textContent = '⚠ Could not decode: incorrect password or altered text.';
+                $('status').classList.add('error');
+            }
+        };
+
+        $('copy').onclick = async () => {
+            try {
+                await navigator.clipboard.writeText($('result').value);
+                $('status').textContent = '✓ Copied to clipboard.';
+                $('status').classList.remove('error');
+            } catch (e) {
+                $('result').select();
+                $('status').textContent = 'Select and copy the result manually.';
+            }
+        };
+
+        $('transfer').onclick = () => {
+            if ($('result').value) {
+                const text = $('result').value;
+                show('decode');
+                $('coded').value = text;
+                $('decodePass').value = $('pass').value;
+                $('status').textContent = 'Paste or verify your password, then unlock.';
+            }
+        };
+    </script>
 </body>
 </html>
