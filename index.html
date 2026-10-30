@@ -503,27 +503,6 @@
                 $('status').classList.add('error');
             }
         };
-
-        $('copy').onclick = async () => {
-            try {
-                await navigator.clipboard.writeText($('result').value);
-                $('status').textContent = '✓ Copied to clipboard.';
-                $('status').classList.remove('error');
-            } catch (e) {
-                $('result').select();
-                $('status').textContent = 'Select and copy the result manually.';
-            }
-        };
-
-        $('transfer').onclick = () => {
-            if ($('result').value) {
-                const text = $('result').value;
-                show('decode');
-                $('coded').value = text;
-                $('decodePass').value = $('pass').value;
-                $('status').textContent = 'Paste or verify your password, then unlock.';
-            }
-        };
     </script>
 </body>
 </html>
