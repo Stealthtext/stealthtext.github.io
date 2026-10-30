@@ -6,95 +6,68 @@
     <title>StealthText API | The Invisible Layer</title>
     <style>
         :root {
-            --bg: #040b0e;
-            --fg: #e9f9f6;
-            --muted: #8ba5a8;
-            --mint: #75ffdc;
-            --panel: rgba(10, 27, 33, 0.4);
-            --line: rgba(117, 255, 220, 0.15);
-            --accent: #5ce8c5;
+            --bg-dark: #040b0e;
+            --bg-light: #f8faf9;
+            --fg-dark: #e9f9f6;
+            --fg-light: #0a1b21;
+            --muted-dark: #8ba5a8;
+            --muted-light: #556b6f;
+            --mint: #5ce8c5;
+            --mint-dark: #0f766e;
+            --panel: #ffffff;
+            --line-dark: rgba(117, 255, 220, 0.15);
+            --line-light: #e2e8e6;
             --danger: #ff6b6b;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
         body {
-            background: var(--bg);
-            color: var(--fg);
+            background: var(--bg-light);
+            color: var(--fg-light);
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
-            position: relative;
         }
         a { color: inherit; text-decoration: none; }
-
-        /* AMBIENT GLOW BACKGROUND */
-        .ambient-glow {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-        .glow-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            animation: float 20s infinite alternate;
-        }
-        .glow-1 {
-            width: 600px; height: 600px;
-            background: rgba(92, 232, 197, 0.15);
-            top: 40%; left: -200px;
-        }
-        .glow-2 {
-            width: 500px; height: 500px;
-            background: rgba(20, 80, 100, 0.3);
-            bottom: -100px; right: -100px;
-            animation-delay: -10s;
-        }
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            100% { transform: translate(50px, 50px) scale(1.1); }
-        }
 
         /* NAVIGATION */
         header {
             position: fixed; top: 0; width: 100%; z-index: 100;
-            background: rgba(4, 11, 14, 0.6);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--line);
+            background: rgba(4, 11, 14, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         .nav-container {
             max-width: 1200px; margin: auto; padding: 18px 24px;
             display: flex; align-items: center; justify-content: space-between;
         }
-        .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; }
+        .logo { font-weight: 800; font-size: 24px; letter-spacing: -1px; color: #fff; }
         .logo span { color: var(--mint); }
         .pill { font-size: 10px; border: 1px solid var(--mint); border-radius: 4px; padding: 2px 6px; color: var(--mint); margin-left: 6px; vertical-align: middle; }
         
-        .nav-links { display: flex; gap: 30px; font-size: 14px; color: var(--muted); }
+        .nav-links { display: flex; gap: 30px; font-size: 14px; color: #c9e0e0; }
         .nav-links a:hover { color: var(--mint); }
         
         .btn {
-            background: var(--accent); color: #021416; font-weight: 700;
+            background: var(--mint); color: #021416; font-weight: 700;
             padding: 12px 24px; border-radius: 8px; font-size: 15px;
             display: inline-block; border: none; cursor: pointer; transition: 0.2s;
         }
         .btn:hover { background: #fff; box-shadow: 0 0 20px rgba(92, 232, 197, 0.4); transform: translateY(-2px); }
-        .btn.secondary { background: transparent; color: var(--fg); border: 1px solid var(--line); }
-        .btn.secondary:hover { border-color: var(--mint); color: var(--mint); background: transparent; }
+        .btn.dark { background: var(--fg-light); color: #fff; }
+        .btn.dark:hover { background: var(--mint-dark); box-shadow: none; }
 
         /* HERO */
         .hero {
             position: relative; min-height: 100vh; display: flex; align-items: center;
             background: url('hero.png') center/cover no-repeat; 
+            perspective: 1000px;
         }
         .hero::before {
             content: ""; position: absolute; inset: 0;
             background: linear-gradient(90deg, #040b0e 0%, rgba(4,11,14,0.9) 40%, rgba(4,11,14,0.2) 100%);
         }
-        .hero-content { position: relative; max-width: 1200px; margin: auto; padding: 120px 24px; width: 100%; }
+        .hero-content { position: relative; max-width: 1200px; margin: auto; padding: 120px 24px; width: 100%; color: var(--fg-dark); transition: transform 0.1s ease-out; }
         .eyebrow { font-size: 13px; letter-spacing: 2px; text-transform: uppercase; color: var(--mint); font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
         .eyebrow::before { content: ''; width: 8px; height: 8px; background: var(--mint); border-radius: 50%; box-shadow: 0 0 10px var(--mint); }
         .hero h1 { font-size: clamp(48px, 6vw, 86px); letter-spacing: -0.04em; line-height: 1.05; max-width: 800px; margin-bottom: 25px; }
@@ -102,103 +75,99 @@
         .lead { font-size: clamp(18px, 2vw, 22px); line-height: 1.6; max-width: 600px; color: #b0caca; margin-bottom: 40px; }
         .actions { display: flex; gap: 15px; flex-wrap: wrap; }
 
-        /* SECTIONS */
-        .wrap { max-width: 1200px; margin: auto; padding: 100px 24px; position: relative; z-index: 1; }
-        .section-title { font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; }
-        .sub { color: var(--muted); font-size: 18px; line-height: 1.7; max-width: 700px; margin-bottom: 50px; }
+        /* LIGHT SECTIONS */
+        .wrap { max-width: 1200px; margin: auto; padding: 100px 24px; }
+        .section-title { font-size: clamp(36px, 5vw, 56px); letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 20px; color: var(--fg-light); }
+        .sub { color: var(--muted-light); font-size: 18px; line-height: 1.7; max-width: 700px; margin-bottom: 50px; }
 
-        /* GLASS CARDS */
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        /* HD IMAGE SECTIONS */
+        .image-feature { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-bottom: 100px; perspective: 1000px; }
+        .image-feature:nth-child(even) .image-box { order: 2; }
+        .image-feature:nth-child(even) .text-box { order: 1; }
+        
+        .image-box { 
+            border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); 
+            transition: transform 0.1s ease-out; transform-style: preserve-3d;
+        }
+        .image-box img { width: 100%; height: auto; display: block; transition: transform 0.5s; }
+        .image-box:hover img { transform: scale(1.05); }
+        
+        .text-box h3 { font-size: 32px; margin-bottom: 15px; color: var(--fg-light); }
+        .text-box p { color: var(--muted-light); font-size: 18px; margin-bottom: 25px; }
+
+        /* LIGHT CARDS */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; perspective: 1000px; }
         .card { 
             background: var(--panel); 
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--line); 
+            border: 1px solid var(--line-light); 
             border-radius: 16px; 
             padding: 35px; 
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.1s ease-out, box-shadow 0.3s, border-color 0.3s;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            transform-style: preserve-3d;
         }
-        .card::before {
-            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--mint), transparent);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .card:hover { border-color: rgba(117, 255, 220, 0.4); transform: translateY(-5px); box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .card:hover::before { opacity: 1; }
-        .card .icon { font-size: 32px; color: var(--mint); margin-bottom: 20px; }
-        .card h3 { font-size: 24px; margin-bottom: 12px; font-weight: 600; }
-        .card p { color: var(--muted); font-size: 15px; }
+        .card:hover { border-color: var(--mint-dark); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+        .card .icon { font-size: 32px; color: var(--mint-dark); margin-bottom: 20px; }
+        .card h3 { font-size: 24px; margin-bottom: 12px; font-weight: 600; color: var(--fg-light); }
+        .card p { color: var(--muted-light); font-size: 15px; }
 
         /* THE LAB */
         .lab-container {
-            background: rgba(5, 15, 20, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--line); border-radius: 24px;
-            padding: clamp(24px, 4vw, 48px); box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            background: #fff;
+            border: 1px solid var(--line-light); border-radius: 24px;
+            padding: clamp(24px, 4vw, 48px); box-shadow: 0 20px 60px rgba(0,0,0,0.05);
             position: relative; overflow: hidden;
         }
-        .lab-container::before {
-            content: ""; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle at 50% 0%, rgba(92,232,197,0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
         
-        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--line); padding-bottom: 20px; }
-        .tab { background: none; border: none; color: var(--muted); font-size: 16px; font-weight: 600; cursor: pointer; padding: 10px 20px; border-radius: 8px; transition: 0.2s; }
-        .tab.active { background: rgba(92,232,197,0.15); color: var(--mint); }
-        .tab:hover:not(.active) { color: var(--fg); }
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--line-light); padding-bottom: 20px; }
+        .tab { background: none; border: none; color: var(--muted-light); font-size: 16px; font-weight: 600; cursor: pointer; padding: 10px 20px; border-radius: 8px; transition: 0.2s; }
+        .tab.active { background: rgba(15, 118, 110, 0.1); color: var(--mint-dark); }
+        .tab:hover:not(.active) { color: var(--fg-light); }
 
         .fields { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .field { display: flex; flex-direction: column; gap: 10px; }
         .field.wide { grid-column: 1 / -1; }
-        label { font-weight: 500; font-size: 14px; color: var(--muted); }
+        label { font-weight: 600; font-size: 14px; color: var(--fg-light); }
         
         textarea, input {
-            width: 100%; background: rgba(2, 7, 8, 0.8); color: var(--fg);
-            border: 1px solid var(--line); border-radius: 10px;
+            width: 100%; background: var(--bg-light); color: var(--fg-light);
+            border: 1px solid var(--line-light); border-radius: 10px;
             padding: 16px; font: inherit; font-size: 15px; outline: none; transition: 0.3s;
         }
-        textarea:focus, input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(92,232,197,0.15); background: #020708; }
+        textarea:focus, input:focus { border-color: var(--mint-dark); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); background: #fff; }
         textarea { min-height: 140px; resize: vertical; }
-        #result { min-height: 180px; background: rgba(8, 21, 25, 0.9); font-family: monospace; color: var(--mint); line-height: 1.8; }
+        #result { min-height: 180px; background: #f0f5f3; font-family: monospace; color: var(--mint-dark); line-height: 1.8; }
         
         .hide { display: none !important; }
-        .status { color: var(--mint); font-size: 14px; margin-top: 15px; min-height: 20px; text-align: center; font-weight: 500; }
+        .status { color: var(--mint-dark); font-size: 14px; margin-top: 15px; min-height: 20px; text-align: center; font-weight: 600; }
         .status.error { color: var(--danger); }
         
-        /* TEXT ANIMATION */
-        .fade-out { animation: fadeOut 0.5s forwards; }
-        .fade-in { animation: fadeIn 1s forwards; }
-        @keyframes fadeOut { to { opacity: 0; transform: translateY(-10px); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         /* VISUAL SIGNAL */
-        .signal-box { margin-top: 30px; background: rgba(2, 7, 8, 0.9); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
-        .bits { font-family: monospace; font-size: 13px; color: var(--accent); opacity: 0.7; word-break: break-all; letter-spacing: 1px; }
+        .signal-box { margin-top: 30px; background: #f0f5f3; border: 1px solid var(--line-light); border-radius: 12px; padding: 20px; }
+        .bits { font-family: monospace; font-size: 13px; color: var(--mint-dark); opacity: 0.8; word-break: break-all; letter-spacing: 1px; }
 
         /* FAQ */
-        .faq details { border-bottom: 1px solid var(--line); padding: 24px 0; }
-        .faq summary { cursor: pointer; font-size: 20px; font-weight: 500; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--fg); }
+        .faq details { border-bottom: 1px solid var(--line-light); padding: 24px 0; }
+        .faq summary { cursor: pointer; font-size: 20px; font-weight: 600; list-style: none; display: flex; justify-content: space-between; align-items: center; color: var(--fg-light); }
         .faq summary::-webkit-details-marker { display: none; }
-        .faq summary::after { content: '+'; color: var(--mint); font-size: 24px; font-weight: 300; transition: 0.3s; }
+        .faq summary::after { content: '+'; color: var(--mint-dark); font-size: 24px; font-weight: 300; transition: 0.3s; }
         .faq details[open] summary::after { transform: rotate(45deg); }
-        .faq p { color: var(--muted); line-height: 1.7; margin-top: 15px; max-width: 800px; }
+        .faq p { color: var(--muted-light); line-height: 1.7; margin-top: 15px; max-width: 800px; }
 
         /* CONTACT */
         .contact-banner {
-            background: rgba(10, 27, 33, 0.5);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(117, 255, 220, 0.3); border-radius: 24px;
+            background: var(--fg-light);
+            border-radius: 24px;
             padding: 60px; text-align: center;
-            box-shadow: 0 0 60px rgba(92,232,197,0.08);
+            color: #fff;
         }
-        .contact-banner h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 20px; }
+        .contact-banner h2 { font-size: clamp(32px, 4vw, 48px); margin-bottom: 20px; color: #fff; }
         .email-form { display: flex; gap: 12px; justify-content: center; max-width: 500px; margin: 30px auto 0; }
-        .email-form input { background: rgba(2, 7, 8, 0.9); }
-        .email-form button { padding: 16px 32px; border-radius: 10px; }
+        .email-form input { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); color: #fff; }
+        .email-form input::placeholder { color: #8ba5a8; }
+        .email-form button { padding: 16px 32px; border-radius: 10px; background: var(--mint); color: #021416; font-weight: bold; }
 
-        footer { border-top: 1px solid var(--line); padding: 50px 24px; text-align: center; color: var(--muted); font-size: 14px; background: #020708; }
+        footer { border-top: 1px solid var(--line-light); padding: 50px 24px; text-align: center; color: var(--muted-light); font-size: 14px; background: #fff; }
 
         /* RESPONSIVE */
         @media (max-width: 900px) {
@@ -212,15 +181,13 @@
             .grid-3 { grid-template-columns: 1fr; }
             .email-form { flex-direction: column; }
             .contact-banner { padding: 40px 20px; }
+            .image-feature { grid-template-columns: 1fr; gap: 30px; }
+            .image-feature:nth-child(even) .image-box { order: 1; }
+            .image-feature:nth-child(even) .text-box { order: 2; }
         }
     </style>
 </head>
 <body>
-
-    <div class="ambient-glow">
-        <div class="glow-orb glow-1"></div>
-        <div class="glow-orb glow-2"></div>
-    </div>
 
     <header>
         <div class="nav-container">
@@ -236,44 +203,36 @@
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
+        <section class="hero" id="hero-section">
+            <div class="hero-content" id="hero-content">
                 <div class="eyebrow">Invisible data. Intentional design.</div>
                 <h1>Some things are better left <span class="gradient">invisible.</span></h1>
                 <p class="lead">Embed protected information and unique signatures in everyday text. An invisible layer for the words your business depends on.</p>
                 <div class="actions">
                     <a class="btn" href="#lab">Try the Live Lab</a>
-                    <a class="btn secondary" href="#overview">See how it works</a>
+                    <a class="btn dark" href="#overview">See how it works</a>
                 </div>
             </div>
         </section>
 
+        <!-- HD IMAGE SECTION 1 -->
         <section class="wrap" id="overview">
-            <div class="eyebrow">Beyond the surface</div>
-            <h2 class="section-title">Ordinary text.<br><span class="gradient">Extraordinary possibilities.</span></h2>
-            <p class="sub">StealthText explores a different approach to data concealment: placing an additional layer of information within natural-looking text. Discover our interactive proof of concept below.</p>
-            <div class="grid-3">
-                <article class="card">
-                    <div class="icon">◈</div>
-                    <h3>Make every copy uniquely yours.</h3>
-                    <p>Explore invisible linguistic signatures that connect a piece of text to its intended source or recipient.</p>
-                </article>
-                <article class="card">
-                    <div class="icon">▤</div>
-                    <h3>A layer within language.</h3>
-                    <p>Conceal a payload within ordinary-looking text, with retrieval based on the relevant key.</p>
-                </article>
-                <article class="card">
-                    <div class="icon">⌘</div>
-                    <h3>Built for your workflow.</h3>
-                    <p>Evaluate a REST API approach around your application, document or communication workflow.</p>
-                </article>
+            <div class="image-feature">
+                <div class="image-box tilt-element">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop" alt="Cybersecurity Network">
+                </div>
+                <div class="text-box">
+                    <div class="eyebrow" style="color: var(--mint-dark);">Beyond the surface</div>
+                    <h2 class="section-title">Ordinary text.<br><span style="color: var(--mint-dark);">Extraordinary possibilities.</span></h2>
+                    <p>StealthText explores a different approach to data concealment: placing an additional layer of information within natural-looking text. It looks like a standard corporate email, but it holds your secrets.</p>
+                </div>
             </div>
         </section>
 
+        <!-- THE LAB -->
         <section class="wrap" id="lab">
-            <div class="eyebrow">The invisible message lab / 001</div>
-            <h2 class="section-title">The same words.<br><span class="gradient">A different layer.</span></h2>
+            <div class="eyebrow" style="color: var(--mint-dark);">The invisible message lab / 001</div>
+            <h2 class="section-title">The same words.<br><span style="color: var(--mint-dark);">A different layer.</span></h2>
             <p class="sub">Write a secret. Lock it with a password. Watch the message transform into a stream of harmless-looking words. Unlock it with the same password.</p>
             
             <div class="lab-container">
@@ -294,7 +253,7 @@
                         </div>
                     </div>
                     <div class="actions" style="margin-top: 30px; justify-content: center;">
-                        <button class="btn" id="encode">Encrypt & Camouflage</button>
+                        <button class="btn" id="encode" style="background: var(--mint-dark); color: white;">Encrypt & Camouflage</button>
                     </div>
                 </div>
                 
@@ -310,12 +269,12 @@
                         </div>
                     </div>
                     <div class="actions" style="margin-top: 30px; justify-content: center;">
-                        <button class="btn" id="decode">Reveal Original Message</button>
+                        <button class="btn" id="decode" style="background: var(--mint-dark); color: white;">Reveal Original Message</button>
                     </div>
                 </div>
 
                 <div class="signal-box">
-                    <div class="eyebrow" style="margin-bottom: 10px;">Encrypted Signal</div>
+                    <div class="eyebrow" style="margin-bottom: 10px; color: var(--mint-dark);">Encrypted Signal</div>
                     <div class="bits" id="bits">01010011 01010100 01000101 01000001 01001100 01010100 01001000</div>
                 </div>
 
@@ -325,38 +284,41 @@
                 </div>
                 
                 <div class="actions" style="margin-top: 20px; justify-content: center;">
-                    <button class="btn secondary" id="copy">Copy to Clipboard</button>
-                    <button class="btn secondary" id="transfer">Send to Decoder →</button>
+                    <button class="btn secondary" id="copy" style="border: 1px solid var(--line-light); color: var(--fg-light);">Copy to Clipboard</button>
+                    <button class="btn secondary" id="transfer" style="border: 1px solid var(--line-light); color: var(--fg-light);">Send to Decoder →</button>
                 </div>
                 <p class="status" id="status"></p>
-                <p style="font-size: 12px; color: var(--muted); text-align: center; margin-top: 20px;">Demo security: AES-GCM encryption with a password-derived key (PBKDF2). No text is sent to a server. Editing the generated passage may prevent recovery.</p>
+                <p style="font-size: 12px; color: var(--muted-light); text-align: center; margin-top: 20px;">Demo security: AES-GCM encryption with a password-derived key (PBKDF2). No text is sent to a server.</p>
             </div>
         </section>
 
+        <!-- HD IMAGE SECTION 2 -->
         <section class="wrap" id="uses">
-            <div class="eyebrow">Where it could fit</div>
-            <h2 class="section-title">Possibilities,<br><span class="gradient">made practical.</span></h2>
-            <div class="grid-3">
-                <article class="card">
-                    <div class="icon">◉</div>
-                    <h3>Provenance</h3>
-                    <p>Give every document a traceable origin. Explore how unique text signatures could help identify the source of a shared document.</p>
-                </article>
-                <article class="card">
-                    <div class="icon">✉</div>
-                    <h3>Communication</h3>
-                    <p>Add a discreet layer to everyday communication by embedding protected information within approved workflows.</p>
-                </article>
-                <article class="card">
-                    <div class="icon">⌘</div>
-                    <h3>Integration</h3>
-                    <p>Bring the invisible layer into your product. Plan an API evaluation around your existing systems and text workflows.</p>
-                </article>
+            <div class="image-feature">
+                <div class="image-box tilt-element">
+                    <img src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?q=80&w=1000&auto=format&fit=crop" alt="Data Provenance">
+                </div>
+                <div class="text-box">
+                    <div class="eyebrow" style="color: var(--mint-dark);">Where it could fit</div>
+                    <h2 class="section-title">Provenance &<br>Communication.</h2>
+                    <p>Give every document a traceable origin. Add a discreet layer to everyday communication by embedding protected information within approved workflows.</p>
+                </div>
+            </div>
+            
+            <div class="image-feature">
+                <div class="image-box tilt-element">
+                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000&auto=format&fit=crop" alt="Integration">
+                </div>
+                <div class="text-box">
+                    <div class="eyebrow" style="color: var(--mint-dark);">Integration</div>
+                    <h2 class="section-title">Bring the invisible layer into your product.</h2>
+                    <p>Plan an API evaluation around the systems and text workflows your team already uses. REST API integration with custom dictionary keys.</p>
+                </div>
             </div>
         </section>
 
         <section class="wrap faq" id="faq">
-            <div class="eyebrow">A little more clarity</div>
+            <div class="eyebrow" style="color: var(--mint-dark);">A little more clarity</div>
             <h2 class="section-title">Good questions.<br>Clearer answers.</h2>
             <details>
                 <summary>What is text steganography?</summary>
@@ -378,9 +340,9 @@
 
         <section class="wrap" id="contact">
             <div class="contact-banner">
-                <div class="eyebrow" style="justify-content: center;">A quieter kind of protection</div>
+                <div class="eyebrow" style="justify-content: center; color: var(--mint);">A quieter kind of protection</div>
                 <h2>Your next layer starts<br>with a conversation.</h2>
-                <p class="sub" style="margin: 0 auto 30px auto; text-align: center;">Tell us what you're building. Let's explore where StealthText fits into your product or communication workflow.</p>
+                <p style="color: #b0caca; margin-bottom: 30px;">Tell us what you're building. Let's explore where StealthText fits into your product or communication workflow.</p>
                 
                 <form class="email-form" action="https://formspree.io/f/mzeevlld" method="POST">
                     <input type="email" name="email" placeholder="Enter your corporate email" required>
@@ -391,12 +353,50 @@
     </main>
 
     <footer>
-        <div class="logo" style="margin-bottom: 15px;">stealth<span>text</span> <span class="pill">API</span></div>
+        <div class="logo" style="margin-bottom: 15px; color: var(--fg-light);">stealth<span style="color: var(--mint-dark);">text</span> <span class="pill" style="border-color: var(--mint-dark); color: var(--mint-dark);">API</span></div>
         <p>The invisible layer. A more thoughtful way to protect your text.</p>
         <p style="margin-top: 15px; font-size: 12px; opacity: 0.5;">© 2026 StealthText. Independent interactive concept. Original 3D artwork. Browser-only technical prototype.</p>
     </footer>
 
     <script>
+        // --- 3D TILT EFFECT ---
+        const tiltElements = document.querySelectorAll('.tilt-element');
+        
+        tiltElements.forEach(el => {
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -10; // Max 10 degrees
+                const rotateY = ((x - centerX) / centerX) * 10;
+                
+                el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+            });
+            
+            el.addEventListener('mouseleave', () => {
+                el.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+            });
+        });
+
+        // --- HERO PARALLAX ---
+        const heroSection = document.getElementById('hero-section');
+        const heroContent = document.getElementById('hero-content');
+
+        heroSection.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+            heroContent.style.transform = `translate(${x}px, ${y}px)`;
+        });
+
+        heroSection.addEventListener('mouseleave', () => {
+            heroContent.style.transform = `translate(0px, 0px)`;
+        });
+
+        // --- ENCRYPTION ENGINE ---
         const words = 'amber bridge candle drift ember forest garden harbor island jasmine kernel lantern meadow nectar orbit pebble quartz river stone trace union vapor willow xenon yield zephyr anchor blaze cloud dusk echo flame glide haze iris'.split(' ');
         const enc = new TextEncoder(), dec = new TextDecoder();
         const $ = id => document.getElementById(id);
